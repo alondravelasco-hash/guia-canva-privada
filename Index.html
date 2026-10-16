@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía Canva - Carpeta Privada</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      --text-main: #1d1d1f;
+      --text-sub: #6e6e73;
+      --accent: #0071e3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #fbfbfd;
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* Fondo Aurora */
+    .aurora-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 20%, rgba(220, 210, 255, 0.6), transparent 40%),
+                  radial-gradient(circle at 80% 30%, rgba(255, 220, 200, 0.5), transparent 40%),
+                  radial-gradient(circle at 50% 80%, rgba(200, 235, 255, 0.6), transparent 50%);
+      filter: blur(60px);
+      animation: floatAurora 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatAurora {
+      0% { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.1) translate(-20px, 20px); }
+    }
+
+    /* Contenedor principal con Scroll Snap */
+    .container {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      box-shadow: var(--glass-shadow);
+      width: 100%;
+      max-width: 1100px;
+      height: 85vh;
+      display: grid;
+      grid-template-columns: 38% 62%;
+      overflow: hidden;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+    }
+
+    .card-info {
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .step-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 6px 14px;
+      background: rgba(0, 113, 227, 0.1);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-info h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .card-info p {
+      font-size: 1.1rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    .card-media {
+      background: rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      position: relative;
+    }
+
+    .card-media img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transition: transform 0.4s ease;
+    }
+
+    .card-media img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Portada especial */
+    .hero-card {
+      grid-template-columns: 1fr;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+    }
+
+    .hero-card h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #1d1d1f 0%, #434344 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-card p {
+      font-size: 1.4rem;
+      color: var(--text-sub);
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+    }
+
+    .scroll-hint {
+      font-size: 0.95rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Navegación por puntos */
+    .nav-dots {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      transform: scale(1.4);
+    }
+
+    /* Adaptabilidad a dispositivos móviles */
+    @media (max-width: 850px) {
+      .glass-card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: 90vh;
+      }
+
+      .card-info {
+        padding: 25px 25px 15px 25px;
+      }
+
+      .card-info h2 {
+        font-size: 1.5rem;
+      }
+
+      .card-info p {
+        font-size: 0.95rem;
+      }
+
+      .card-media {
+        padding: 15px;
+      }
+
+      .hero-card h1 {
+        font-size: 2.2rem;
+      }
+
+      .nav-dots {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="aurora-bg"></div>
+
+  <div class="nav-dots" id="navDots"></div>
+
+  <div class="container" id="container">
+
+    <!-- Slide 0: Portada -->
+    <div class="slide" id="slide-0">
+      <div class="glass-card hero-card">
+        <div>
+          <span class="step-badge">Guía Rápida</span>
+          <h1>Cómo Crear una Carpeta Privada en Canva</h1>
+          <p>Aprende paso a paso a organizar y proteger tus proyectos de forma segura y profesional.</p>
+          <div class="scroll-hint">Desliza hacia abajo para comenzar ↓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 1 -->
+    <div class="slide" id="slide-1">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 01</span>
+          <h2>Inicio de Canva</h2>
+          <p>Accede a tu cuenta de Canva. En la pantalla principal tendrás acceso a la barra de búsqueda y al menú de navegación lateral.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.48.19 a.m..jpg" alt="Paso 1">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" id="slide-2">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 02</span>
+          <h2>Sección Proyectos</h2>
+          <p>Dirígete al menú de la izquierda y selecciona la opción <strong>Proyectos</strong> para ver todos tus archivos creados.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.50.03 a.m..jpg" alt="Paso 2">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" id="slide-3">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 03</span>
+          <h2>Mis Proyectos</h2>
+          <p>Haz clic en la pestaña <strong>Mis proyectos</strong> para filtrar tus elementos personales y organizar tus carpetas.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.50.32 a.m..jpg" alt="Paso 3">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide" id="slide-4">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 04</span>
+          <h2>Agregar Nueva Carpeta</h2>
+          <p>En la esquina superior derecha, haz clic en el botón <strong>+ (Agregar)</strong> y elige <strong>Nueva carpeta</strong>.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.50.48 a.m..jpg" alt="Paso 4">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide" id="slide-5">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 05</span>
+          <h2>Ventana de Configuración</h2>
+          <p>Se abrirá una ventana emergente donde podrás definir el nombre y configurar los accesos de la nueva carpeta.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.51.04 a.m..jpg" alt="Paso 5">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide" id="slide-6">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 06</span>
+          <h2>Asignar Nombre</h2>
+          <p>Escribe el nombre deseado para tu carpeta (por ejemplo: <em>Carpeta de Alo Tecnología</em>) y mantén los accesos restringidos.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.51.42 a.m..jpg" alt="Paso 6">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide" id="slide-7">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 07</span>
+          <h2>Confirmación</h2>
+          <p>Haz clic en el botón morado <strong>Crear una carpeta</strong>. Tu nueva carpeta aparecerá en la sección de Carpetas.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.52.11 a.m..jpg" alt="Paso 7">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide" id="slide-8">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 08</span>
+          <h2>Acceso a la Carpeta</h2>
+          <p>Haz clic sobre tu nueva carpeta para ingresar y comenzar a gestionar o subir tus contenidos privados.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.52.27 a.m..jpg" alt="Paso 8">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide" id="slide-9">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 09</span>
+          <h2>Crear Nuevo Diseño</h2>
+          <p>Dentro de la carpeta, haz clic en <strong>Crear diseño</strong> para seleccionar la plantilla que vas a utilizar.</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.53.02 a.m..jpg" alt="Paso 9">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide" id="slide-10">
+      <div class="glass-card">
+        <div class="card-info">
+          <span class="step-badge">Paso 10</span>
+          <h2>Verificar Privacidad</h2>
+          <p>Asegúrate de que en las opciones de compartir indique <strong>Solo tú tienes acceso</strong>. ¡Listo, tu diseño está privado!</p>
+        </div>
+        <div class="card-media">
+          <img src="Captura de pantalla 2026-10-16 a la(s) 10.55.13 a.m..jpg" alt="Paso 10">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Generar puntos de navegación
+    const totalSlides = 11;
+    const navDots = document.getElementById('navDots');
+    const container = document.getElementById('container');
+
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => {
+        document.getElementById(`slide-${i}`).scrollIntoView({ behavior: 'smooth' });
+      });
+      navDots.appendChild(dot);
+    }
+
+    // Actualizar indicador de puntos al hacer scroll
+    const dots = document.querySelectorAll('.dot');
+    container.addEventListener('scroll', () => {
+      const slideHeight = window.innerHeight;
+      const index = Math.round(container.scrollTop / slideHeight);
+      dots.forEach((dot, i) => {
+        if (i === index) dot.classList.add('active');
+        else dot.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>
