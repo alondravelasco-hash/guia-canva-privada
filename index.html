@@ -3,286 +3,557 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guía Canva - Carpeta Privada</title>
+  <title>Canva: Carpetas Privadas - Guía</title>
+  
+  <!-- Tipografía estilo Apple (San Francisco/Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
     :root {
-      --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-      --glass-bg: rgba(255, 255, 255, 0.55);
-      --glass-border: rgba(255, 255, 255, 0.7);
-      --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-      --text-main: #1d1d1f;
-      --text-sub: #515154;
-      --accent: #0071e3;
+      --apple-text: #1d1d1f;
+      --apple-text-secondary: #86868b;
+      --apple-blue: #0066cc;
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      --glass-blur: blur(24px);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: #fbfbfd;
-      color: var(--text-main);
+      background-color: #f5f5f7;
+      color: var(--apple-text);
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     .aurora-bg {
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
-      background: radial-gradient(circle at 20% 20%, rgba(220, 210, 255, 0.6), transparent 40%),
-                  radial-gradient(circle at 80% 30%, rgba(255, 220, 200, 0.5), transparent 40%),
-                  radial-gradient(circle at 50% 80%, rgba(200, 235, 255, 0.6), transparent 50%);
-      filter: blur(60px);
-      animation: floatAurora 15s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatAurora {
-      0% { transform: scale(1) translate(0, 0); }
-      100% { transform: scale(1.1) translate(-20px, 20px); }
-    }
-
-    .container {
-      height: 100vh;
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
-    }
-
-    .slide {
-      height: 100vh;
-      scroll-snap-align: start;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-
-    .glass-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid var(--glass-border);
-      border-radius: 28px;
-      box-shadow: var(--glass-shadow);
-      width: 100%;
-      max-width: 1100px;
-      height: 85vh;
-      display: grid;
-      grid-template-columns: 38% 62%;
+      background: #fdfbfb;
       overflow: hidden;
     }
 
-    .card-info {
-      padding: 50px 40px;
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: float 20s infinite ease-in-out;
+      opacity: 0.6;
+    }
+
+    .blob-1 { width: 60vw; height: 60vw; background: #ffe6e6; top: -10%; left: -10%; animation-delay: 0s; }
+    .blob-2 { width: 50vw; height: 50vw; background: #fae4cb; bottom: -10%; right: -10%; animation-delay: -5s; }
+    .blob-3 { width: 40vw; height: 40vw; background: #e0f2fe; top: 40%; left: 40%; animation-delay: -10s; }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(5%, 10%) scale(1.1); }
+      66% { transform: translate(-5%, 5%) scale(0.9); }
+    }
+
+    .presentation-container {
+      width: 100%;
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    .slide {
+      scroll-snap-align: center;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 32px;
+      box-shadow: var(--glass-shadow);
+      width: 100%;
+      max-width: 1200px;
+      height: 85vh;
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.is-visible .glass-panel {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .content-side {
+      flex: 1;
+      padding: 4rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
-    .step-badge {
-      display: inline-block;
-      align-self: flex-start;
-      padding: 6px 14px;
-      background: rgba(0, 113, 227, 0.1);
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.85rem;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-
-    .card-info h2 {
-      font-size: 2.1rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-
-    .card-info p {
-      font-size: 1.05rem;
-      color: var(--text-sub);
-      line-height: 1.5;
-    }
-
-    .card-media {
-      background: rgba(0, 0, 0, 0.02);
+    .image-side {
+      flex: 1.2;
+      padding: 2rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 30px;
+      background: rgba(255, 255, 255, 0.2);
+      border-left: 1px solid var(--glass-border);
     }
 
-    .card-media img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      border-radius: 16px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.8);
+    h1, h2 {
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
     }
 
-    .hero-card {
-      grid-template-columns: 1fr;
-      text-align: center;
-      align-items: center;
-      padding: 60px;
+    h1 { font-size: 3.5rem; font-weight: 700; background: linear-gradient(90deg, #1d1d1f, #434345); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h2 { font-size: 2.5rem; font-weight: 600; }
+    
+    p.subtitle {
+      font-size: 1.25rem;
+      color: var(--apple-text-secondary);
+      line-height: 1.5;
+      margin-bottom: 2rem;
+      font-weight: 400;
     }
 
-    .hero-card h1 {
-      font-size: 3.2rem;
-      font-weight: 800;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #1d1d1f 0%, #434344 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-card p {
-      font-size: 1.3rem;
-      color: var(--text-sub);
-      max-width: 600px;
-      margin: 0 auto 30px auto;
-    }
-
-    .scroll-hint {
-      font-size: 0.95rem;
-      color: var(--accent);
+    .step-number {
+      font-size: 1rem;
       font-weight: 600;
+      color: var(--apple-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      display: block;
     }
 
-    @media (max-width: 850px) {
-      .glass-card { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: 90vh; }
-      .card-info { padding: 25px 25px 15px 25px; }
-      .card-info h2 { font-size: 1.5rem; }
-      .hero-card h1 { font-size: 2.2rem; }
+    .screenshot-wrapper {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.8);
+      position: relative;
+      transform: scale(0.95);
+      transition: transform 1s ease;
+      background: #f0f0f5; /* Fondo por defecto para el placeholder */
+    }
+
+    .slide.is-visible .screenshot-wrapper {
+      transform: scale(1);
+    }
+
+    .screenshot-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left top;
+    }
+
+    ul.features {
+      list-style: none;
+      margin-top: 1.5rem;
+    }
+
+    ul.features li {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.2rem;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    ul.features li i {
+      color: var(--apple-blue);
+      margin-top: 0.25rem;
+      margin-right: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .nav-dots {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: var(--apple-blue);
+      transform: scale(1.3);
+    }
+
+    @media (max-width: 1024px) {
+      .glass-panel { flex-direction: column; height: auto; max-height: 90vh; }
+      .image-side { border-left: none; border-top: 1px solid var(--glass-border); padding: 1rem; flex: initial; height: 40vh; }
+      .content-side { padding: 2rem; flex: initial; }
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
-  <div class="aurora-bg"></div>
-  <div class="container">
 
-    <div class="slide">
-      <div class="glass-card hero-card">
-        <div>
-          <span class="step-badge">Guía Rápida</span>
-          <h1>Cómo Crear una Carpeta Privada en Canva</h1>
-          <p>Aprende paso a paso a organizar y proteger tus proyectos de forma segura.</p>
-          <div class="scroll-hint">Desliza hacia abajo para comenzar ↓</div>
+  <!-- Fondo animado Aurora -->
+  <div class="aurora-bg">
+    <div class="aurora-blob blob-1"></div>
+    <div class="aurora-blob blob-2"></div>
+    <div class="aurora-blob blob-3"></div>
+  </div>
+
+  <div class="nav-dots" id="navDots"></div>
+
+  <div id="enterprise-upload-overlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(29, 29, 31, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; text-align:center; padding: 2rem;">
+    <i class="fa-solid fa-shield-halved" style="font-size:3.5rem; color:var(--apple-blue); margin-bottom:1rem;"></i>
+    <h2 style="color:white; margin-bottom:1rem; font-size:2.5rem; font-weight:700;">Modo Presentación Empresarial</h2>
+    <p style="max-width:650px; font-size:1.15rem; color:#a1a1a6; margin-bottom:2.5rem; line-height:1.6;">
+      Por protocolos de privacidad, tu navegador bloquea el acceso automático a tus archivos locales.<br><br>
+      Para insertar tus <b>capturas privadas</b> en esta vista previa ahora mismo, haz clic en el botón y selecciona tus imágenes (paso1.jpg a paso10.jpg).
+    </p>
+    <label style="background:var(--apple-blue); color:white; padding:1.2rem 2.5rem; border-radius:999px; font-size:1.2rem; font-weight:600; cursor:pointer; box-shadow: 0 10px 30px rgba(0,102,204,0.4); transition: all 0.3s ease; display:inline-block;">
+      <i class="fa-solid fa-cloud-arrow-up" style="margin-right:0.5rem;"></i> Seleccionar mis capturas para presentar
+      <input type="file" id="localFiles" multiple accept="image/*" style="display:none;">
+    </label>
+    <button id="closeOverlayBtn" style="margin-top:2.5rem; background:transparent; border:none; color:#86868b; text-decoration:underline; cursor:pointer; font-size:1rem;">Omitir por ahora (mostrar cuadros vacíos)</button>
+  </div>
+
+  <div class="presentation-container" id="presentation">
+
+    <section class="slide">
+      <div class="glass-panel" style="flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem;">
+        <span class="step-number" style="margin-bottom: 1rem;">Guía Corporativa</span>
+        <h1>Carpetas Privadas en Canva</h1>
+        <p class="subtitle" style="max-width: 600px; margin: 0 auto 3rem auto;">
+          Aprende a organizar, proteger y gestionar tus diseños de forma segura con un flujo de trabajo profesional y exclusivo.
+        </p>
+        <div style="display:flex; gap:1rem;">
+          <i class="fa-solid fa-lock" style="font-size:2rem; color:var(--apple-blue); opacity:0.8;"></i>
+          <i class="fa-solid fa-folder" style="font-size:2rem; color:var(--apple-blue); opacity:0.8;"></i>
+          <i class="fa-solid fa-shield-halved" style="font-size:2rem; color:var(--apple-blue); opacity:0.8;"></i>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 01</span>
-          <h2>Inicio de Canva</h2>
-          <p>Accede a tu cuenta de Canva en la pantalla principal para acceder al menú de navegación lateral.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="content-side">
+          <span class="step-number">Paso 1</span>
+          <h2>Panel Principal</h2>
+          <p class="subtitle">Todo comienza en tu espacio de trabajo.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-check-circle"></i> Ingresa a tu cuenta de Canva y visualiza el inicio.</li>
+            <li><i class="fa-solid fa-check-circle"></i> Ubica la barra lateral izquierda donde se centraliza la navegación de tus recursos.</li>
+          </ul>
         </div>
-        <div class="card-media"><img src="paso1.jpg" alt="Paso 1"></div>
+        <div class="image-side">
+          <div class="screenshot-wrapper">
+            <img src="paso1.jpg" alt="Paso 1" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+1'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 02</span>
-          <h2>Sección Proyectos</h2>
-          <p>En el menú lateral de la izquierda, haz clic sobre la opción <strong>Proyectos</strong>.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="image-side" style="border-left: none; border-right: 1px solid var(--glass-border);">
+          <div class="screenshot-wrapper">
+            <img src="paso2.jpg" alt="Paso 2" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+2'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
         </div>
-        <div class="card-media"><img src="paso2.jpg" alt="Paso 2"></div>
+        <div class="content-side">
+          <span class="step-number">Paso 2</span>
+          <h2>Módulo de Proyectos</h2>
+          <p class="subtitle">Navega a tu repositorio personal.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-arrow-pointer"></i> Haz clic en la opción <b>"Proyectos"</b> del menú lateral.</li>
+            <li><i class="fa-solid fa-arrow-pointer"></i> Esto abrirá la vista de "Todos los proyectos" recientes.</li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 03</span>
-          <h2>Mis Proyectos</h2>
-          <p>Selecciona la pestaña <strong>Mis proyectos</strong> para filtrar tus archivos personales.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="content-side">
+          <span class="step-number">Paso 3</span>
+          <h2>Filtrar tu contenido</h2>
+          <p class="subtitle">Asegura el entorno correcto.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-filter"></i> En el submenú lateral, selecciona <b>"Mis proyectos"</b>.</li>
+            <li><i class="fa-solid fa-filter"></i> Esto garantiza que la carpeta se cree en tu espacio personal y no en áreas compartidas por defecto.</li>
+          </ul>
         </div>
-        <div class="card-media"><img src="paso3.jpg" alt="Paso 3"></div>
+        <div class="image-side">
+          <div class="screenshot-wrapper">
+            <img src="paso3.jpg" alt="Paso 3" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+3'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 04</span>
-          <h2>Agregar Nueva Carpeta</h2>
-          <p>Haz clic en el botón superior de la derecha con el icono <strong>+</strong> y presiona <strong>Nueva carpeta</strong>.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="image-side" style="border-left: none; border-right: 1px solid var(--glass-border);">
+          <div class="screenshot-wrapper">
+            <img src="paso4.jpg" alt="Paso 4" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+4'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
         </div>
-        <div class="card-media"><img src="paso4.jpg" alt="Paso 4"></div>
+        <div class="content-side">
+          <span class="step-number">Paso 4</span>
+          <h2>Nueva Carpeta</h2>
+          <p class="subtitle">Inicia la creación del contenedor.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-plus"></i> Localiza el botón <b>"+" (Agregar)</b> en la esquina superior derecha.</li>
+            <li><i class="fa-solid fa-plus"></i> En el menú desplegable, selecciona <b>"Nueva carpeta"</b>.</li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 05</span>
-          <h2>Ventana de Configuración</h2>
-          <p>Aparecerá el menú emergente donde podrás nombrar tu carpeta y configurar los permisos.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="content-side">
+          <span class="step-number">Paso 5</span>
+          <h2>Asignación de Nombre</h2>
+          <p class="subtitle">Identifica claramente tu espacio.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-keyboard"></i> Aparecerá una ventana modal. Borra "Carpeta sin título".</li>
+            <li><i class="fa-solid fa-keyboard"></i> Escribe un nombre descriptivo, por ejemplo: <i>"Carpeta de Alo Tecnología"</i>.</li>
+          </ul>
         </div>
-        <div class="card-media"><img src="paso5.jpg" alt="Paso 5"></div>
+        <div class="image-side">
+          <div class="screenshot-wrapper">
+            <img src="paso5.jpg" alt="Paso 5" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+5'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 06</span>
-          <h2>Asignar Nombre</h2>
-          <p>Asigna el nombre a tu nueva carpeta (ej. <em>Carpeta de Alo Tecnología</em>).</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="image-side" style="border-left: none; border-right: 1px solid var(--glass-border);">
+          <div class="screenshot-wrapper">
+            <img src="paso6.jpg" alt="Paso 6" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+6'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
         </div>
-        <div class="card-media"><img src="paso6.jpg" alt="Paso 6"></div>
+        <div class="content-side">
+          <span class="step-number">Paso 6</span>
+          <h2>Confirmación y Privacidad</h2>
+          <p class="subtitle">Valida el acceso único.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-eye-slash"></i> Nota que por defecto, el titular (tú) eres la única persona con acceso.</li>
+            <li><i class="fa-solid fa-eye-slash"></i> Haz clic en el botón morado <b>"Crear una carpeta"</b>.</li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 07</span>
-          <h2>Confirmar Creación</h2>
-          <p>Presiona el botón morado <strong>Crear una carpeta</strong> para guardar los cambios.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="content-side">
+          <span class="step-number">Paso 7</span>
+          <h2>El Espacio de Trabajo</h2>
+          <p class="subtitle">Tu nueva carpeta está lista.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-folder-open"></i> Ahora te encontrarás dentro de tu nueva carpeta privada.</li>
+            <li><i class="fa-solid fa-folder-open"></i> El espacio indicará que está vacío y listo para recibir contenido.</li>
+          </ul>
         </div>
-        <div class="card-media"><img src="paso7.jpg" alt="Paso 7"></div>
+        <div class="image-side">
+          <div class="screenshot-wrapper">
+            <img src="paso7.jpg" alt="Paso 7" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+7'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 08</span>
-          <h2>Acceso a la Carpeta</h2>
-          <p>Haz clic sobre la carpeta creada dentro de tu lista para entrar en ella.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="image-side" style="border-left: none; border-right: 1px solid var(--glass-border);">
+          <div class="screenshot-wrapper">
+            <img src="paso8.jpg" alt="Paso 8" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+8'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
         </div>
-        <div class="card-media"><img src="paso8.jpg" alt="Paso 8"></div>
+        <div class="content-side">
+          <span class="step-number">Paso 8</span>
+          <h2>Generar Contenido</h2>
+          <p class="subtitle">Todo lo creado aquí hereda la privacidad.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-pen-nib"></i> Haz clic en <b>"Crear diseño"</b> directamente desde esta carpeta.</li>
+            <li><i class="fa-solid fa-pen-nib"></i> Selecciona el formato deseado (ej. Presentación, Post para Instagram).</li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 09</span>
-          <h2>Crear Nuevo Diseño</h2>
-          <p>En el panel de tu carpeta privada, presiona <strong>Crear diseño</strong> para empezar un proyecto.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="content-side">
+          <span class="step-number">Paso 9</span>
+          <h2>Comprobando la Privacidad</h2>
+          <p class="subtitle">Garantía de nivel de seguridad.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-shield-check"></i> Dentro del editor del diseño, haz clic en <b>"Compartir"</b> arriba a la derecha.</li>
+            <li><i class="fa-solid fa-shield-check"></i> En "Nivel de acceso", confirma que dice: <b>"Solo tú tienes acceso"</b>.</li>
+          </ul>
         </div>
-        <div class="card-media"><img src="paso9.jpg" alt="Paso 9"></div>
+        <div class="image-side">
+          <div class="screenshot-wrapper">
+            <img src="paso9.jpg" alt="Paso 9" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+9'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="slide">
-      <div class="glass-card">
-        <div class="card-info">
-          <span class="step-badge">Paso 10</span>
-          <h2>Verificar Privacidad</h2>
-          <p>Comprueba en el menú superior que la opción diga <strong>Solo tú tienes acceso</strong>.</p>
+    <section class="slide">
+      <div class="glass-panel">
+        <div class="image-side" style="border-left: none; border-right: 1px solid var(--glass-border);">
+          <div class="screenshot-wrapper">
+            <img src="paso10.jpg" alt="Paso 10" onerror="this.onerror=null; this.src='https://placehold.co/800x600/e2e8f0/1e293b?text=Visualización:+Paso+10'; this.style.objectFit='contain'; this.style.padding='1rem';">
+          </div>
         </div>
-        <div class="card-media"><img src="paso10.jpg" alt="Paso 10"></div>
+        <div class="content-side">
+          <span class="step-number">¡Todo Listo!</span>
+          <h2>Manos a la Obra</h2>
+          <p class="subtitle">Ya tienes tu espacio seguro y configurado.</p>
+          <ul class="features">
+            <li><i class="fa-solid fa-star"></i> Todos los cambios y diseños que hagas se guardarán automáticamente en tu espacio.</li>
+            <li><i class="fa-solid fa-palette"></i> Disfruta de una organización impecable y totalmente privada en tu cuenta.</li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </section>
 
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const slides = document.querySelectorAll('.slide');
+      const navDotsContainer = document.getElementById('navDots');
+      
+      // Crear puntos de navegación dinámicamente
+      slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if(index === 0) dot.classList.add('active');
+        
+        dot.addEventListener('click', () => {
+          slides[index].scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        navDotsContainer.appendChild(dot);
+      });
+
+      const dots = document.querySelectorAll('.dot');
+
+      // Animaciones al hacer scroll (IntersectionObserver)
+      const observerOptions = {
+        root: document.getElementById('presentation'),
+        threshold: 0.5
+      };
+
+      const slideObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            const index = Array.from(slides).indexOf(entry.target);
+            dots.forEach(d => d.classList.remove('active'));
+            if(dots[index]) dots[index].classList.add('active');
+          }
+        });
+      }, observerOptions);
+
+      slides.forEach(slide => {
+        slideObserver.observe(slide);
+      });
+      
+      // Mostrar la primera diapositiva de inmediato al cargar
+      setTimeout(() => {
+        slides[0].classList.add('is-visible');
+      }, 100);
+
+      const fileInput = document.getElementById('localFiles');
+      const overlay = document.getElementById('enterprise-upload-overlay');
+      const closeBtn = document.getElementById('closeOverlayBtn');
+      const allImages = document.querySelectorAll('.screenshot-wrapper img');
+
+      closeBtn.addEventListener('click', () => {
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.style.display = 'none', 500);
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+        if(files.length > 0) {
+          
+          files.forEach(file => {
+            const fileName = file.name.toLowerCase();
+            allImages.forEach(img => {
+              const srcPath = img.getAttribute('src') || '';
+              const fallbackText = img.getAttribute('alt') || '';
+              
+              // Buscamos coincidencia por el nombre (ej. "paso1", "paso2")
+              if (srcPath.toLowerCase().includes(fileName.split('.')[0]) || 
+                  fileName.includes(srcPath.toLowerCase().split('.')[0]) ||
+                  fileName.replace(/[^0-9]/g, '') === fallbackText.replace(/[^0-9]/g, '')) {
+                
+                img.src = URL.createObjectURL(file);
+                // Quitar los estilos de placeholder
+                img.style.objectFit = 'cover';
+                img.style.padding = '0';
+                img.style.background = 'transparent';
+              }
+            });
+          });
+          
+          // Efecto de entrada exitosa
+          overlay.innerHTML = `<i class="fa-solid fa-circle-check" style="font-size:5rem; color:#34c759; margin-bottom:1rem;"></i><h2 style="color:white; font-size:2rem;">¡Capturas Sincronizadas!</h2><p style="color:#a1a1a6;">Listo para presentar a tus jefes.</p>`;
+          
+          setTimeout(() => {
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.8s ease';
+            setTimeout(() => overlay.style.display = 'none', 800);
+          }, 1500);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
